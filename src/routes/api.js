@@ -21,7 +21,7 @@ let lastGetEarthquakesResultTime = 0;
 //   }
 
 //   superagent
-//     .get('http://alerts.weather.gov/cap/us.php')
+//     .get('http://alerts.weather.gov/cap/us.php?x=0')
 //     .end((apiError, apiResponse) => {
 //       if (apiError) {
 //         callback(apiError, null);
@@ -63,6 +63,35 @@ const getEarthquakes = callback => {
     });
 };
 
+let lastGetEarthquakesWeekResult = null;
+let lastGetEarthquakesWeekResultTime = 0;
+
+const getEarthquakesWeek = callback => {
+  // If it's within the last minute we use our cached data
+  if (lastGetEarthquakesWeekResultTime + 60000 > Date.now()) {
+    callback(null, lastGetEarthquakesWeekResult);
+    return;
+  }
+
+  superagent
+    .get(
+      'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.atom'
+    )
+    .end((apiError, apiResponse) => {
+      if (apiError) {
+        callback(apiError, null);
+        return;
+      }
+
+      const xmlBody = apiResponse.body.toString();
+      const jsonObj = xmlParser.parse(xmlBody);
+      // Update cache data
+      lastGetEarthquakesWeekResult = jsonObj;
+      lastGetEarthquakesWeekResultTime = Date.now();
+      callback(null, jsonObj);
+    });
+};
+
 function getHourlyEarthquakes(callback) {
   getEarthquakes((apiError, earthquakesJson) => {
     if (apiError) {
@@ -95,6 +124,33 @@ function getHourlyEarthquakes(callback) {
 
 function getStrongestEarthquake(callback) {
   getEarthquakes((apiError, earthquakesJson) => {
+    if (apiError) {
+      callback(apiError, null);
+      return;
+    }
+
+    let strongestEarthquake = 0;
+    let strongestLocation = '';
+
+    for (const entry of earthquakesJson.feed.entry) {
+      const strengthMatch = entry.title.match(/M ([0-9.]+) /);
+      if (strengthMatch === null || strengthMatch.length < 2) {
+        console.log('This is bad:', entry.title);
+        continue;
+      }
+      const strength = Number.parseFloat(strengthMatch[1]);
+      if (strength > strongestEarthquake) {
+        strongestEarthquake = strength;
+        strongestLocation = entry.title.match(/ - (.+)/)[1];
+      }
+    }
+
+    callback(null, { strongestEarthquake, strongestLocation });
+  });
+}
+
+function getStrongestEarthquakeWeek(callback) {
+  getEarthquakesWeek((apiError, earthquakesJson) => {
     if (apiError) {
       callback(apiError, null);
       return;
@@ -175,8 +231,8 @@ router.get('/api/strongestEarthquake', (request, response) => {
   });
 });
 
-router.get('/api/depthCorrelation', (request, response) => {
-  getDepthCorrelation((apiError, earthquakesJson) => {
+router.get('/api/strongestEarthquakeWeek', (request, response) => {
+  getStrongestEarthquakeWeek((apiError, earthquakesJson) => {
     // If we had an error return st atus 500 and the error and log
     if (apiError) {
       console.log('Api error: ', apiError);
@@ -190,9 +246,24 @@ router.get('/api/depthCorrelation', (request, response) => {
   });
 });
 
+router.get('/api/depthCorrelation', (request, response) => {
+  getDepthCorrelation((apiError, earthquakesJson) => {
+    // If we had an error return status 500 and the error and log
+    if (apiError) {
+      console.log('Api error: ', apiError);
+      response
+        .status(500)
+        .json(apiError)
+        .end();
+      return;
+    }
+    response.status(200).json(earthquakesJson);
+  });
+});
+
 // router.get('/api/weatherAlertsTest', (request, response) => {
-//   getWeatherAlerts((apiError, earthquakesJson) => {
-//     // If we had an error return st atus 500 and the error and log
+//   getWeatherAlerts((apiError, weatherJson) => {
+//     // If we had an error return status 500 and the error and log
 //     if (apiError) {
 //       console.log('Api error: ', apiError);
 //       response
@@ -201,7 +272,7 @@ router.get('/api/depthCorrelation', (request, response) => {
 //         .end();
 //       return;
 //     }
-//     response.status(200).json(earthquakesJson);
+//     response.status(200).json(weatherJson);
 //   });
 // });
 
