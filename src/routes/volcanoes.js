@@ -24,7 +24,6 @@ function getVolcanoesByRegion(callback) {
       callback(apiError, null);
       return;
     }
-    // console.log(volcanoesJson);
     const volcanoData = {};
     for (const entry of volcanoesJson) {
       if (entry.properties.Region in volcanoData) {
@@ -33,7 +32,6 @@ function getVolcanoesByRegion(callback) {
         volcanoData[entry.properties.Region] = 1;
       }
     }
-    console.log(volcanoData);
     callback(null, volcanoData);
   });
 }
