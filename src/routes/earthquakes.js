@@ -104,7 +104,6 @@ function getStrongestEarthquake(callback, getter) {
         strongestLocation = entry.title.match(/ - (.+)/)[1];
       }
     }
-
     callback(null, { strongestEarthquake, strongestLocation });
   });
 }
