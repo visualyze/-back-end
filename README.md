@@ -23,9 +23,12 @@
 
 ### .env Variables for back end
 
-- `REACT_APP_API_URL=https://pc-sd-jk-visualyze.herokuapp.com/`
 - `darksky=YOUR_KEY_HERE`
 - `geodata=YOUR_KEY_HERE`
+
+### .env Variables for front end
+
+- `REACT_APP_API_URL=https://pc-sd-jk-visualyze.herokuapp.com/`
 
 ### How it Works
 
