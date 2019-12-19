@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.5.1",
     "express": "^4.17.1",
     "express-swagger-generator": "^1.1.15",
