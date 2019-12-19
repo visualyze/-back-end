@@ -1,10 +1,11 @@
 const superagent = require('superagent');
 
-function getLatLong(query, request, response) {
-  console.log('this is my query', query);
-  console.log('this is my request', request);
-  console.log('this is my request.body', request.body);
-  const urlToVisit = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=AIzaSyAkHx7LRhOcZalVqUBZPsIbJ4gisqT8yWY`;
+const GEO_DATA = process.env.geodata;
+const DARK_SKY = process.env.darksky;
+
+
+function getLatLong(city, response) {
+  const urlToVisit = `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${GEO_DATA}`;
   superagent
     .get(urlToVisit)
     .then(responseFromSuper => {
@@ -15,8 +16,7 @@ function getLatLong(query, request, response) {
         specificGeoData.geometry.location.lat,
         specificGeoData.geometry.location.lng,
       ];
-      console.log('this is my newLocation data', newLocation);
-      response.send(newLocation);
+      response.status(200).send(newLocation);
     })
     .catch(error => {
       response.status(500).send(error.message);
@@ -24,4 +24,28 @@ function getLatLong(query, request, response) {
     });
 }
 
-module.exports = getLatLong;
+var weatherDailyDataCache = {};
+function getWeatherDailyData(lat, long, response) {
+  const cacheKey = lat + '_' + long;
+  if(cacheKey in weatherDailyDataCache && weatherDailyDataCache[cacheKey].time + (1000 * 60 * 60) > Date.now()){
+    response.status(200).send(weatherDailyDataCache[cacheKey].data);
+    return;
+  }
+
+  const urlToVisit = `https://api.darksky.net/forecast/${DARK_SKY}/${lat},${long}`;
+  superagent
+    .get(urlToVisit)
+    .then(responseFromSuper => {
+      weatherDailyDataCache[cacheKey] = {
+        time: Date.now,
+        data: responseFromSuper.body.daily.data,
+      },
+      response.status(200).send(responseFromSuper.body.daily.data);
+    })
+    .catch(error => {
+      response.status(500).send(error.message);
+      console.error(error);
+    });
+}
+
+module.exports = {getLatLong, getWeatherDailyData};
