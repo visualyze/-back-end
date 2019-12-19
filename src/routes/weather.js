@@ -13,7 +13,7 @@ function getLatLong(query, request, response) {
       const specificGeoData = geoData.results[0];
       const newLocation = [
         specificGeoData.geometry.location.lat,
-        specificGeoData.geometry.location.lng
+        specificGeoData.geometry.location.lng,
       ];
       console.log('this is my newLocation data', newLocation);
       response.send(newLocation);
