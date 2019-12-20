@@ -24,7 +24,6 @@ function getLatLong(city, response) {
     });
 }
 
-// TODO: When do we throw out old data?
 var weatherDailyDataCache = {};
 
 function getWeatherDailyData(lat, long, response) {

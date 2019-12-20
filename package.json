@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "lint": "eslint 'src/**/*.js'",
     "test": "jest --verbose",
-    "test-watch": "jest --watchAll --verbose"
+    "test-watch": "jest --watchAll --verbose --coverage"
   },
   "jest": {
     "testEnvironment": "node"

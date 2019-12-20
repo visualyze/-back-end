@@ -35,21 +35,21 @@ const getEarthquakes = (callback, url) => {
 const getEarthquakesDay = callback => {
   getEarthquakes(
     callback,
-    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom'
+    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom',
   );
 };
 
 const getEarthquakesWeek = callback => {
   getEarthquakes(
     callback,
-    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.atom'
+    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.atom',
   );
 };
 
 const getEarthquakesMonth = callback => {
   getEarthquakes(
     callback,
-    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.atom'
+    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.atom',
   );
 };
 
@@ -69,7 +69,7 @@ function getHourlyEarthquakes(callback) {
       const hour = whenMs - (whenMs % hourMs);
 
       if (hour in countsPerHour) {
-        // Add 1 earthqake to the hour bucket
+        // Add 1 earthquake to the hour bucket
         countsPerHour[hour] += 1;
       } else {
         // It's not there so it's the first earthquake that hour
@@ -159,5 +159,5 @@ module.exports = {
   getStrongestEarthquakeMonth,
   getStrongestEarthquakeWeek,
   getStrongestEarthquakeDay,
-  getHourlyEarthquakes
+  getHourlyEarthquakes,
 };

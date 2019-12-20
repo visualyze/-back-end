@@ -29,7 +29,7 @@ const getRssFeed = (callback) => {
     getRssFeedCache[cacheKey] = {};
     getRssFeedCache[cacheKey].result = jsonObj.rss.channel.item;
     getRssFeedCache[cacheKey].time = Date.now;
-    console.log('rss feed', jsonObj);
+    // console.log('rss feed', jsonObj);
     callback(null, getRssFeedCache[cacheKey].result);
   });
 };
