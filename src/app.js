@@ -1,12 +1,5 @@
 'use strict';
 
-// var admin = require('firebase-admin');
-// var serviceAccount = require('./d32-final-sarah-jon-peter-firebase-adminsdk-hmsw5-623f4a4f53.json');
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: 'https://d32-final-sarah-jon-peter.firebaseio.com'
-// });
-
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
