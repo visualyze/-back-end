@@ -14,7 +14,7 @@ function getLatLong(city, response) {
       const specificGeoData = geoData.results[0];
       const newLocation = [
         specificGeoData.geometry.location.lat,
-        specificGeoData.geometry.location.lng
+        specificGeoData.geometry.location.lng,
       ];
       response.status(200).send(newLocation);
     })
@@ -25,6 +25,7 @@ function getLatLong(city, response) {
 }
 
 var weatherDailyDataCache = {};
+
 function getWeatherDailyData(lat, long, response) {
   const cacheKey = lat + '_' + long;
   if(cacheKey in weatherDailyDataCache && weatherDailyDataCache[cacheKey].time + (1000 * 60 * 60) > Date.now()){
@@ -48,4 +49,4 @@ function getWeatherDailyData(lat, long, response) {
     });
 }
 
-module.exports = {getLatLong, getWeatherDailyData}
+module.exports = {getLatLong, getWeatherDailyData};

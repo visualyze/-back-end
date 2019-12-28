@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "lint": "eslint 'src/**/*.js'",
     "test": "jest --verbose",
-    "test-watch": "jest --watchAll --verbose"
+    "test-watch": "jest --watchAll --verbose --coverage"
   },
   "jest": {
     "testEnvironment": "node"
@@ -18,20 +18,20 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.7.2",
     "express": "^4.17.1",
     "express-swagger-generator": "^1.1.15",
     "fast-xml-parser": "^3.15.1",
     "firebase-admin": "^8.8.0",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "lint": "^0.7.0",
-    "mongodb-memory-server": "^5.1.5",
-    "mongoose": "^5.6.2",
+    "mongodb-memory-server": "^6.0.2",
+    "mongoose": "^5.8.1",
     "mongoose-schema-jsonschema": "^1.2.1",
     "morgan": "^1.9.1",
     "require-directory": "^2.1.1",
     "superagent": "^5.1.2",
     "supertest": "^4.0.2",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.3"
   }
 }
