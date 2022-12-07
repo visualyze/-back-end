@@ -24,7 +24,7 @@
     "fast-xml-parser": "^3.15.1",
     "firebase-admin": "^8.8.0",
     "jest": "^24.8.0",
-    "lint": "^0.7.0",
+    "lint": "^0.8.8",
     "mongodb-memory-server": "^5.1.5",
     "mongoose": "^5.6.2",
     "mongoose-schema-jsonschema": "^1.2.1",
